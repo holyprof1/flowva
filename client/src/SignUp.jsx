@@ -15,8 +15,6 @@ function SignUp() {
   const [strengthClass, setStrengthClass] = useState('');
   const navigate = useNavigate();
 
-  const API_URL = process.env.REACT_APP_API_URL || 'https://flowva-backend.onrender.com';
-
   const showMessage = (text, type) => {
     setMessage(text);
     setMessageType(type);
@@ -63,12 +61,12 @@ function SignUp() {
     }
     try {
       showMessage('Creating your account...', 'success');
-      const response = await axios.post(`${API_URL}/api/auth/signup`, { email, password });
+      const response = await axios.post('http://localhost:5000/api/auth/signup', { email, password });
       localStorage.setItem('token', response.data.token);
       showMessage('Account created successfully! Welcome to Flowva.', 'success');
       setTimeout(() => navigate('/onboarding'), 1500);
     } catch (err) {
-      console.error('Signup error:', err.message, err.response?.data);
+      console.error('Signup error:', err);
       showMessage(err.response?.data?.error || 'Sign up failed', 'error');
     }
   };
@@ -76,14 +74,14 @@ function SignUp() {
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       showMessage('Authenticating with Google...', 'info');
-      const response = await axios.post(`${API_URL}/api/auth/google`, {
+      const response = await axios.post('http://localhost:5000/api/auth/google', {
         token: credentialResponse.credential,
       });
       localStorage.setItem('token', response.data.token);
       showMessage('Google sign-up successful! Redirecting...', 'success');
       setTimeout(() => navigate('/onboarding'), 1500);
     } catch (err) {
-      console.error('Google signup error:', err.message, err.response?.data);
+      console.error('Google signup error:', err);
       showMessage(err.response?.data?.error || 'Google sign-up failed', 'error');
     }
   };
@@ -93,7 +91,7 @@ function SignUp() {
   };
 
   return (
-    <GoogleOAuthProvider clientId="863393434827-l5p71oi02jaf8g576n28vjtoiusf8r9b.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId="your_google_client_id_here">
       <div className="container animate__animated animate__fadeInUp">
         <form id="signup-form" className="animate-form" onSubmit={handleSubmit}>
           <div className="logo">
