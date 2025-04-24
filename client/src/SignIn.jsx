@@ -28,39 +28,42 @@ function SignIn() {
       return;
     }
     try {
-      showMessage('Signing you in...', 'info');
+      console.log('Sending signin request:', { email, password });
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/signin`,
         { email, password },
-        { withCredentials: true }
+        { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
       );
+      console.log('Signin response:', response.data);
       localStorage.setItem('token', response.data.token);
       showMessage('Signed in successfully!', 'success');
       setTimeout(() => navigate('/dashboard'), 1500);
     } catch (err) {
-      console.error('Sign in error:', err.response?.data || err.message);
+      console.error('Signin error:', err.response?.data, err.message, err.config);
       showMessage(err.response?.data?.error || 'Sign in failed', 'error');
     }
   };
 
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      showMessage('Signing in with Google...', 'info');
+      console.log('Google signin request:', credentialResponse);
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/google`,
         { token: credentialResponse.credential },
-        { withCredentials: true }
+        { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
       );
+      console.log('Google signin response:', response.data);
       localStorage.setItem('token', response.data.token);
       showMessage('Google sign-in successful! Redirecting...', 'success');
       setTimeout(() => navigate('/dashboard'), 1500);
     } catch (err) {
-      console.error('Google sign-in error:', err.response?.data || err.message);
+      console.error('Google signin error:', err.response?.data, err.message, err.config);
       showMessage(err.response?.data?.error || 'Google sign-in failed', 'error');
     }
   };
 
   const handleGoogleFailure = () => {
+    console.log('Google signin failed');
     showMessage('Google sign-in failed', 'error');
   };
 
