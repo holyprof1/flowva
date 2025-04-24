@@ -8,8 +8,9 @@ dotenv.config();
 
 const app = express();
 
+// CORS configuration
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://flowva-frontend.onrender.com'],
+  origin: ['http://localhost:5173', 'https://merry-cendol-eda9bd.netlify.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
