@@ -12,7 +12,8 @@ function SignIn() {
   const [messageType, setMessageType] = useState('');
   const navigate = useNavigate();
 
-  console.log('VITE_API_URL:', import.meta.env.VITE_API_URL); // Debug
+  console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
+  console.log('VITE_GOOGLE_CLIENT_ID:', import.meta.env.VITE_GOOGLE_CLIENT_ID);
 
   const showMessage = (text, type = 'info') => {
     setMessage(text);
