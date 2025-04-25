@@ -10,6 +10,7 @@ function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
@@ -28,6 +29,7 @@ function SignIn() {
       return;
     }
     try {
+      setIsLoading(true);
       console.log('Sending signin request:', { email, password });
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/signin`,
@@ -39,13 +41,20 @@ function SignIn() {
       showMessage('Signed in successfully!', 'success');
       setTimeout(() => navigate('/dashboard'), 1500);
     } catch (err) {
-      console.error('Signin error:', err.response?.data, err.message, err.config);
+      console.error('Signin error:', {
+        response: err.response?.data,
+        message: err.message,
+        config: err.config,
+      });
       showMessage(err.response?.data?.error || 'Sign in failed', 'error');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
+      setIsLoading(true);
       console.log('Google signin request:', credentialResponse);
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/google`,
@@ -57,8 +66,14 @@ function SignIn() {
       showMessage('Google sign-in successful! Redirecting...', 'success');
       setTimeout(() => navigate('/dashboard'), 1500);
     } catch (err) {
-      console.error('Google signin error:', err.response?.data, err.message, err.config);
+      console.error('Google signin error:', {
+        response: err.response?.data,
+        message: err.message,
+        config: err.config,
+      });
       showMessage(err.response?.data?.error || 'Google sign-in failed', 'error');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -114,13 +129,13 @@ function SignIn() {
           <div className="forgot-password">
             <a href="/forgot-password">Forgot password?</a>
           </div>
-          <button type="submit" className="btn">
+          <button type="submit" className={`btn ${isLoading ? 'btn-loading' : ''}`} disabled={isLoading}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
               <polyline points="10 17 15 12 10 7"></polyline>
               <line x1="15" y1="12" x2="3" y2="12"></line>
             </svg>
-            Sign in
+            {isLoading ? 'Signing in...' : 'Sign in'}
           </button>
           <div className="divider">or continue with</div>
           <GoogleLogin
@@ -129,9 +144,9 @@ function SignIn() {
             render={(renderProps) => (
               <button
                 type="button"
-                className="btn btn-secondary"
+                className={`btn btn-secondary ${isLoading ? 'btn-loading' : ''}`}
                 onClick={renderProps.onClick}
-                disabled={renderProps.disabled}
+                disabled={renderProps.disabled || isLoading}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.20-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -139,7 +154,7 @@ function SignIn() {
                   <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
                   <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                 </svg>
-                Google
+                {isLoading ? 'Loading...' : 'Google'}
               </button>
             )}
           />
