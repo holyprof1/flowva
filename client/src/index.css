@@ -45,7 +45,7 @@ div.container {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   width: 100% !important;
-  min-width: 400px !important; /* Matches .password-strength wider effect */
+  min-width: 480px !important;
   max-width: 480px !important;
   padding: 40px;
   position: relative;
@@ -183,6 +183,11 @@ div.container::before {
   background-color: white;
   border: 1px solid var(--gray-300);
   color: var(--gray-700);
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Ensure Google button is centered */
+  width: 100%;
+  margin: 0 auto; /* Center within container */
 }
 
 .btn-secondary:hover {
@@ -276,7 +281,7 @@ div.container::before {
 }
 
 .animate-form {
-  animation: fadeInUp 0.5s;
+  animation: fadeInUp 0.3s; /* Reduced duration for faster navigation */
 }
 
 @keyframes fadeInUp {
@@ -383,7 +388,7 @@ div.container::before {
 
 .onboarding-container .step {
   display: none;
-  animation: fadeIn 0.5s ease;
+  animation: fadeIn 0.3s ease; /* Reduced duration */
   min-height: 450px;
   flex-direction: column;
 }
@@ -592,7 +597,7 @@ div.container::before {
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   div.container {
-    min-width: 90vw !important; /* Wider on mobile */
+    min-width: 90vw !important;
     max-width: 90vw !important;
     padding: 30px 20px;
   }
