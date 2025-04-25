@@ -71,16 +71,11 @@ function SignUp() {
         { email, password },
         { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
       );
-      console.log('Signup response:', response.data);
       localStorage.setItem('token', response.data.token);
       showMessage('Account created successfully! Welcome to Flowva.', 'success');
       setTimeout(() => navigate('/onboarding'), 1500);
     } catch (err) {
-      console.error('Signup error:', {
-        response: err.response?.data,
-        message: err.message,
-        config: err.config,
-      });
+      console.error('Signup error:', err.response?.data, err.message);
       showMessage(err.response?.data?.error || 'Sign up failed', 'error');
     } finally {
       setIsLoading(false);
@@ -90,22 +85,17 @@ function SignUp() {
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       setIsLoading(true);
-      console.log('Google signup request:', credentialResponse);
+      showMessage('Authenticating with Google...', 'info');
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/google`,
         { token: credentialResponse.credential },
         { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
       );
-      console.log('Google signup response:', response.data);
       localStorage.setItem('token', response.data.token);
       showMessage('Google sign-up successful! Redirecting...', 'success');
       setTimeout(() => navigate('/onboarding'), 1500);
     } catch (err) {
-      console.error('Google signup error:', {
-        response: err.response?.data,
-        message: err.message,
-        config: err.config,
-      });
+      console.error('Google signup error:', err.response?.data, err.message);
       showMessage(err.response?.data?.error || 'Google sign-up failed', 'error');
     } finally {
       setIsLoading(false);
@@ -113,7 +103,6 @@ function SignUp() {
   };
 
   const handleGoogleFailure = () => {
-    console.log('Google sign-up failed');
     showMessage('Google sign-up failed', 'error');
   };
 

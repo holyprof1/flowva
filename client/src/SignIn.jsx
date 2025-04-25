@@ -144,7 +144,7 @@ function SignIn() {
             render={(renderProps) => (
               <button
                 type="button"
-                className={`btn btn-secondary ${isLoading ? 'btn-loading' : ''}`}
+                className={`btn btn-secondary google-btn ${isLoading ? 'btn-loading' : ''}`}
                 onClick={renderProps.onClick}
                 disabled={renderProps.disabled || isLoading}
               >
