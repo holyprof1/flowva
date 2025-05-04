@@ -60,6 +60,7 @@ function Dashboard() {
         ],
       }
     : {};
+  <!-- **/ project will be completed **/ -->
 
   const chartOptions = {
     responsive: true,
